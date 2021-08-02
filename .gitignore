@@ -1,0 +1,5 @@
+submitter.py
+.idea
+*.err
+*.out
+*.txt
