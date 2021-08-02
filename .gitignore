@@ -3,3 +3,4 @@ submitter.py
 *.err
 *.out
 *.txt
+*.gz
