@@ -5,6 +5,8 @@ import matplotlib as mpl
 import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib.ticker import AutoLocator
+print('matplotlib: {}'.format(mpl.__version__))
+
 
 mpl.style.use('default')
 # prop_cycle = plt.rcParams['axes.prop_cycle']
@@ -38,9 +40,9 @@ font = {'family': 'Latin Modern Sans',
 mpl.rc('font', **font)
 
 
-def pop_grid(inPlotVars=None, xGridVars=None, ylim=(0, 1), direc='',
-             yGridVars=None, labelFontSize=3, figureWidth=3.375 * 2*1.5, figName="para"):
-    fig_pop = plt.figure(dpi=1000, figsize=(figureWidth, figureWidth * 1.5))
+def pop_grid(inPlotVars=None, xGridVars=None, yLimit=(0, 1), direc='',
+             yGridVars=None, labelFontSize=3, figureWidth=3.375 * 2*1.5, aspectRatio=1.5, figName="para"):
+    fig_pop = plt.figure(dpi=1000, figsize=(figureWidth, figureWidth * aspectRatio))
     yGridLen = len(yGridVars)
     xGridLen = len(xGridVars)
     gs = fig_pop.add_gridspec(xGridLen, yGridLen, hspace=0.001, wspace=0.001)
@@ -54,26 +56,26 @@ def pop_grid(inPlotVars=None, xGridVars=None, ylim=(0, 1), direc='',
         legends = []
         linestyle_str = []
         for i, inPlotVar in enumerate(inPlotVars):
-            file = f'{direc}\pop_da1_{inPlotVars[i]}_{xGridVars[m]}_{yGridVars[n]}.dat'
+            file = f'{direc}/pop_da1_20_{inPlotVars[i]}_{xGridVars[m]}_{yGridVars[n]}_10.dat'
+            linestyle_str.append(line_geom[i])
+            legends.append(f"T = {inPlotVar}")
             if path.exists(file):
                 b = np.fromfile(file, np.float32)
-                b = np.insert(b, 0, 1.0)
-                b = b[::10]
+                # b = np.insert(b, 0, 1.0)
+                # b = b[::10]
                 b = ([i * 0.05 / timeStepSize for i in range(len(b))], b)
-                print(b[0][-1])
+                print(b[0][-1], len(b[1]))
                 pop.append((b))
-                legends.append(f"T = {inPlotVar}")
-                linestyle_str.append(line_geom[i])
-                print(f"{direc}\pop_da1_{inPlotVars[i]}_{xGridVars[m]}_{yGridVars[n]}.dat EXISTS")
+                print(f"{direc}/pop_da1_20_{inPlotVars[i]}_{xGridVars[m]}_{yGridVars[n]}.dat EXISTS")
             else:
-                print(f"{direc}\pop_da1_{inPlotVars[i]}_{xGridVars[m]}_{yGridVars[n]}.dat NOT EXISTS")
+                print(f"{direc}/pop_da1_20_{inPlotVars[i]}_{xGridVars[m]}_{yGridVars[n]}.dat NOT EXISTS")
 
         linestyle_str = linestyle_str * len(colors_mma_detai)
-        colors_pop = colors_mma_detai * len(pop)
+        colors_pop = colors_mma_detai * int(len(linestyle_str)/len(colors_mma_detai))
 
-        grid[m, n].tick_params(axis="y", direction="in", width=.5, length=1, labelleft=False)
+        # grid[m, n].tick_params(axis="y", direction="in", width=.5, length=1, labelleft=True)
         grid[m, n].tick_params(axis="x", direction="in", width=.5, length=1, labelbottom=False)
-        grid[m, n].set_prop_cycle(color=colors_pop, linestyle=linestyle_str)
+        # grid[m, n].set_prop_cycle(color=colors_pop, linestyle=linestyle_str)
         grid[m, n].text(0.98, 0.06, f"$\epsilon:{xGridVars[m]}$\n$\omega_c: {yGridVars[n]}$",
                         transform=grid[m, n].transAxes, ha='right', fontsize=labelFontSize)
         # grid[m,n].grid(False)
@@ -86,8 +88,8 @@ def pop_grid(inPlotVars=None, xGridVars=None, ylim=(0, 1), direc='',
             grid[m, n].plot(*cur, lw=0.5, solid_capstyle='round', dash_capstyle='round', dash_joinstyle='bevel')
 
         [i.set_linewidth(.5) for i in grid[m,n].spines.values()]
-        grid[m, n].set_xlim([0, b[0][-1]])
-        grid[m, n].set_ylim(ylim)
+        # grid[m, n].set_xlim([0, b[0][-1]])
+        grid[m, n].set_ylim(yLimit)
         grid[m, n].legend(list(legends), loc="lower left", ncol=1, frameon=False,
                           handlelength=1.2, columnspacing=0.3, handletextpad=0.2,
                           fontsize=labelFontSize, borderaxespad=0)
@@ -116,4 +118,10 @@ energyListPara = np.arange(-1500, 8501, 500)
 gammaList = np.arange(10, 501, 50)
 
 # pop_grid(inPlotVars=tempList, xGridVars=energyListPara, yGridVars=gammaList, ylim=[0, 1], direc='.\paraCoupling\output', figName='para')
-pop_grid(inPlotVars=tempList, xGridVars=energyListParaReverse, yGridVars=gammaList, ylim=[0, 1], direc='.\paraCouplingReverse\output', figName='paraReverse')
+# pop_grid(inPlotVars=tempList, xGridVars=energyListParaReverse, yGridVars=gammaList, ylim=[0, 1], direc='.\paraCouplingReverse\output', figName='paraReverse')
+tempListNonAdiabatic = [90, 200, 300, 400]
+energyListNonAdiabatic = e = np.arange(-2500, 6501, 500)
+gammaListNonAdiabatic = np.arange(50, 201, 50)
+pop_grid(inPlotVars=tempListNonAdiabatic, xGridVars=energyListNonAdiabatic, yGridVars=gammaListNonAdiabatic, yLimit=[0., 1],
+         direc='./nonAdiabatic/output', figName='nonAdiabatic', aspectRatio=3, figureWidth=3.375*2)
+
