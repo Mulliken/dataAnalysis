@@ -118,11 +118,11 @@ geomList = ['ic', 'star']
 geomList = ['star']
 
 #############################################
-# direc = './based_on_GR_geom_broad_ene/output'
-# energyList = np.arange(-2500, 15001, 500)
-# energyList = energyList.reshape(6, 6)
-# aspectRatio = .5
-# figName = 'GR_geom_broad_ene'
+direc = './based_on_GR_geom_broad_ene/output'
+energyList = np.arange(-2500, 15001, 500)
+energyList = energyList.reshape(6, 6)
+aspectRatio = .5
+figName = 'GR_geom_broad_ene'
 # GR->LE 2121.192587999998, GR->CT 3335.972705499997, LE-CT 3236.866411499999
 
 #############################################
@@ -148,8 +148,12 @@ figName = 'LE_geom_narrow_ene'
 # GR->LE 3169.121356999998, GR->CT 4661.842874499999, LE-CT 4946.1319074999965
 
 
-
-
-
-pop_grid(inPlotVars=tempList, xGridVars=energyList, yGridVars=energyList.T, yLimit=[0., 1],
-         direc=direc, figName=f'DA1_{figName}', aspectRatio=aspectRatio, figureWidth=3.75 * 2, linewidth=0.5)
+pop_grid(inPlotVars=tempList,
+         xGridVars=energyList,
+         yGridVars=energyList.T,
+         yLimit=[0., 1],
+         direc=direc,
+         figName=f'DA1_{figName}',
+         aspectRatio=aspectRatio,
+         figureWidth=3.75 * 2,
+         linewidth=0.5)
