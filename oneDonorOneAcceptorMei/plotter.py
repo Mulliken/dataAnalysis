@@ -5,8 +5,8 @@ import matplotlib as mpl
 import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib.ticker import AutoLocator
-print('matplotlib: {}'.format(mpl.__version__))
 
+print('matplotlib: {}'.format(mpl.__version__))
 
 mpl.style.use('default')
 # prop_cycle = plt.rcParams['axes.prop_cycle']
@@ -35,13 +35,13 @@ colors_mma_detai = [(0.368417, 0.506779, 0.709798), (0.880722, 0.611041, 0.14205
                     (0.915, 0.3325, 0.2125), (0.9728288904374106, 0.621644452187053, 0.07336199581899142),
                     (0.736782672705901, 0.358, 0.5030266573755369)]
 
-font = {'family': 'Latin Modern Sans',
-        'size': 10}
+font = {  # 'family': 'Latin Modern Sans',
+    'size': 10}
 mpl.rc('font', **font)
 
 
 def pop_grid(inPlotVars=None, xGridVars=None, yLimit=(0, 1), direc='',
-             yGridVars=None, labelFontSize=5, figureWidth=3, aspectRatio=1.5, figName="para",linewidth=1):
+             yGridVars=None, labelFontSize=5, figureWidth=3, aspectRatio=1.5, figName="para", linewidth=1):
     fig_pop = plt.figure(dpi=1000, figsize=(figureWidth, figureWidth * aspectRatio))
     yGridLen = len(yGridVars)
     xGridLen = len(xGridVars)
@@ -50,52 +50,52 @@ def pop_grid(inPlotVars=None, xGridVars=None, yLimit=(0, 1), direc='',
     # y_ticks = [[0.3, 0.5, 0.7, 0.9], [0.3, 0.5, 0.7, 0.9, 1.0], [0.3, 0.5, 0.7, 0.9], [0.3, 0.5, 0.7, 0.9]]
     # x_ticks = [[0, 2.5], [0, 2.5, 5]]
     line_geom = ('solid', (0, (0.001, 1.5)), (0, (1.2, 1.2)), (0, (2.5, 2, 2.5, 1)))
-    timeStepSize = 1
     for m, n in it.product(range(xGridLen), range(yGridLen)):
         pop = []
         legends = []
         linestyle_str = []
         for i, inPlotVar in enumerate(inPlotVars):
             # file = f'{direc}/pop_{yGridVars[n]}_T{inPlotVars[i]}_E{xGridVars[m]}_C100.dat'
-            file = f'{direc}/pop_star_T{inPlotVars[i]}_E{xGridVars[m,n]}.dat'
+            file = f'{direc}/pop_star_T{inPlotVars[i]}_E{xGridVars[m, n]}.dat'
             linestyle_str.append(line_geom[i])
             legends.append(f"T = {inPlotVar}")
             if path.exists(file):
                 b = np.fromfile(file, np.float32)
-                # b = np.insert(b, 0, 1.0)
+                b = np.insert(b, 0, 1.0)
+                time_step = 0.001 / 10 * 2
                 # b = b[::10]
-                b = ([i * 0.05 / timeStepSize for i in range(len(b))], b)
+                b = ([i * 5.3 * time_step for i in range(len(b))], b)
                 print(b[0][-1], len(b[1]))
-                pop.append((b))
-                print(f"{direc}/pop_star_T{inPlotVars[i]}_E{xGridVars[m,n]}.dat EXISTS")
+                pop.append(b)
+                print(f"{direc}/pop_star_T{inPlotVars[i]}_E{xGridVars[m, n]}.dat EXISTS")
             else:
-                print(f"{direc}/pop_star_T{inPlotVars[i]}_E{xGridVars[m,n]}.dat NOT EXISTS")
+                print(f"{direc}/pop_star_T{inPlotVars[i]}_E{xGridVars[m, n]}.dat NOT EXISTS")
 
         linestyle_str = linestyle_str * len(colors_mma_detai)
-        colors_pop = colors_mma_detai * int(len(linestyle_str)/len(colors_mma_detai))
+        colors_pop = colors_mma_detai * int(len(linestyle_str) / len(colors_mma_detai))
 
         # grid[m, 0].tick_params(axis="y", direction="in", width=.5, length=1, labelleft=True)
         # grid[m, n].tick_params(axis="x", direction="in", width=.5, length=1, labelbottom=False)
         # grid[m, n].set_prop_cycle(color=colors_pop, linestyle=linestyle_str)
-        grid[m, n].text(0.98, 0.06, f"$\epsilon:{xGridVars[m,n]}$",
+        grid[m, n].text(0.98, 0.06, f"$\epsilon:{xGridVars[m, n]}$",
                         transform=grid[m, n].transAxes, ha='right', fontsize=labelFontSize)
         # grid[m,n].grid(False)
         # grid[m,n].text(.1,.8, geom[m].upper()+str(phys_d[n]),
         # transform=grid[m,n].transAxes)
         # grid[m,n].set_xticks(x_ticks[n])
-        grid[m,n].xaxis.set_major_locator(plt.MaxNLocator(4))
+        grid[m, n].xaxis.set_major_locator(plt.MaxNLocator(4))
         # grid[m,n].set_yticks(ytick[m])
         for cur in pop:
             grid[m, n].plot(*cur, lw=linewidth, solid_capstyle='round', dash_capstyle='round', dash_joinstyle='bevel')
 
-        [i.set_linewidth(0.5) for i in grid[m,n].spines.values()]
+        [i.set_linewidth(0.5) for i in grid[m, n].spines.values()]
         # grid[m, n].set_xlim([0, b[0][-1]])
         grid[m, n].set_ylim(yLimit)
         grid[m, n].legend(list(legends), loc="lower left", ncol=1, frameon=False,
                           handlelength=1.2, columnspacing=0.3, handletextpad=0.2,
                           fontsize=labelFontSize, borderaxespad=0)
-    fig_pop.text(0, 0.5, r'$\rho_{\uparrow}$', ha='left', usetex=True, fontsize=5)
-    fig_pop.text(0.55, 0, r'$t\Delta/\pi$', ha='center', usetex=True, fontsize=5)
+    fig_pop.text(0, 0.5, r'$\rho_{\uparrow}$', ha='left', usetex=False, fontsize=5)
+    fig_pop.text(0.55, 0.01, r'$t/\mathrm{ps}$', ha='center', usetex=False, fontsize=10)
     fig_pop.subplots_adjust(left=0.12, right=0.97, bottom=0.12, top=0.97)
     # fig_pop.show()
 
@@ -112,18 +112,44 @@ def pop_grid(inPlotVars=None, xGridVars=None, yLimit=(0, 1), direc='',
     plt.savefig(f'{figName}.png')  # ,bbox_inches='tight',pad_inches=0)
     print(f"Finished Drawing {figName}")
 
+
 tempList = [5, 90, 300]
-# energyList = np.arange(-2500, 15001, 500)
-energyList = np.arange(-300, 3101, 200)
-# energyList = np.arange(-500, 15001, 500)
-# energyList = np.arange(-2500, 15001, 500)
-print(energyList.shape)
-# exit()
-energyList = energyList.reshape(3,6)
 geomList = ['ic', 'star']
 geomList = ['star']
-#direc='./based_on_LE_geom_narrow_ene/output'
-# direc='./based_on_GR_geom_broad_ene/output'
-pop_grid(inPlotVars=tempList, xGridVars=energyList, yGridVars=energyList.T, yLimit=[0., 1],
-         direc='./based_on_LE_geom_narrow_ene/output', figName='DA1', aspectRatio=0.5, figureWidth=3.75*2, linewidth=0.5)
 
+#############################################
+# direc = './based_on_GR_geom_broad_ene/output'
+# energyList = np.arange(-2500, 15001, 500)
+# energyList = energyList.reshape(6, 6)
+# aspectRatio = .5
+# figName = 'GR_geom_broad_ene'
+# GR->LE 2121.192587999998, GR->CT 3335.972705499997, LE-CT 3236.866411499999
+
+#############################################
+direc = './based_on_GRLE_geom_broad_ene/output'
+energyList = np.arange(-2500, 15001, 500)
+energyList = energyList.reshape(6, 6)
+aspectRatio = 1
+figName = 'GRLE_geom_broad_ene'
+# GR->LE 2121.192587999998, GR->CT 6002.451535500001, LE-CT 4659.383519499999
+
+direc = './based_on_LE_geom/output/'
+energyList = np.arange(-500, 15001, 500)
+energyList = energyList.reshape(4, 8)
+aspectRatio = .5
+figName = 'LE_geom'
+# GR->LE 3169.121356999998, GR->CT 4661.842874499999, LE-CT 4946.1319074999965
+
+direc = './based_on_LE_geom_narrow_ene/'
+energyList = np.arange(-500, 15001, 500)
+energyList = energyList.reshape(4, 8)
+aspectRatio = .5
+figName = 'LE_geom_narrow_ene'
+# GR->LE 3169.121356999998, GR->CT 4661.842874499999, LE-CT 4946.1319074999965
+
+
+
+
+
+pop_grid(inPlotVars=tempList, xGridVars=energyList, yGridVars=energyList.T, yLimit=[0., 1],
+         direc=direc, figName=f'DA1_{figName}', aspectRatio=aspectRatio, figureWidth=3.75 * 2, linewidth=0.5)
