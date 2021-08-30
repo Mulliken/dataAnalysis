@@ -112,7 +112,7 @@ def pop_grid(inPlotVars=None, xGridVars=None, yLimit=(0, 1), direc='',
     print(f"Finished Drawing {figName}")
 
 tempList = [5, 90, 200, 300]
-energyList = np.arange(-2500, 8501, 500)
+energyList = np.arange(-2500, 15001, 500)
 geomList = ['ic', 'star']
 pop_grid(inPlotVars=tempList, xGridVars=energyList, yGridVars=geomList, yLimit=[0., 1],
          direc='./output', figName='DA1', aspectRatio=6, figureWidth=3.375)

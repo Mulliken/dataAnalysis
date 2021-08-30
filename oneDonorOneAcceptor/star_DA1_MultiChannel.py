@@ -37,12 +37,12 @@ etn.B[-1][0, 0, 0] = 1.
 
 # spectral density parameters
 ene = int(argv[2])
-eth.h1e = 134.56223 * sigma_x + np.diag([ene, 0]) + np.diag([reorg1, reorg2])
+eth.h1e = 400 * sigma_x + np.diag([ene, 0]) + np.diag([reorg1, reorg2])
 
 # ~ 0.5 ps ~ 0.1T
 p = []
 
-threshold = 5e-4
+threshold = 1e-3
 dt = 0.001 / 10
 num_steps = 400
 
