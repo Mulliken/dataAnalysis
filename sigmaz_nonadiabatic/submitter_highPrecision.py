@@ -8,10 +8,10 @@ temp = [90, 200, 300, 400]
 gList = [3500]
 #stepNum = [1, 2, 4, 8]
 numStep = [100] ## Toal Steps = numStep * stepNum, stepNum is acctually a further splliting
-e = np.arange(-1500, 8501, 500)
-gam_l = np.arange(50, 201, 50)
+e = np.arange(2000, 8501, 500)
+gam_l = np.arange(50, 1051, 200)
 coup = [20,120]
-coup = [20]
+coup = [120]
 #gam_l = np.arange(10, 100, 20)
 '''
 #SBATCH --partition=scavenger

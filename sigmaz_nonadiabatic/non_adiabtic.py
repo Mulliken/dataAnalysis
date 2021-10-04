@@ -34,7 +34,7 @@ etn.B[-1][0, 0, 0] = 1.
 # spectral density parameters
 g = 1000
 eth.domain = [-g, g]
-j = lambda w: drude(w, lam=2700, gam=gam)* temp_factor(temp,w)
+j = lambda w: drude(w, lam=3952.11670, gam=gam)* temp_factor(temp,w)
 eth.sd = j
 
 eth.he_dy = np.diag([-1, 1])/2

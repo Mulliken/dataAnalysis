@@ -14,7 +14,7 @@ coupling = int(sys.argv[4])
 
 
 bath_length =int(200*5*1.5)
-phys_dim = 20
+phys_dim = 10
 bond_dim = 1000
 a = [np.ceil(phys_dim - N*(phys_dim -2)/ bath_length) for N in range(bath_length)]
 a = [int(x) for x in a]
@@ -32,7 +32,7 @@ etn.B[-1][0, 0, 0] = 1.
 
 
 # spectral density parameters
-g = 3500
+g = 4000
 eth.domain = [-g, g]
 j = lambda w: drude(w, lam=2700, gam=gam)* temp_factor(temp,w)
 eth.sd = j
@@ -52,7 +52,7 @@ print(eth.k_list)
 p = []
 
 
-threshold = 2e-4
+threshold = 5e-4
 dt = 0.005
 num_steps = 200 # Due to 2nd order Trotter, actual time is dt*2*num_steps
 
