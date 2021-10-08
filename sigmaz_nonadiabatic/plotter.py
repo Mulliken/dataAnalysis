@@ -78,7 +78,7 @@ def pop_grid(inPlotVars=None, xGridVars=None, yLimit=(0, 1), direc='',
         # grid[m, 0].tick_params(axis="y", direction="in", width=.5, length=1, labelleft=True)
         # grid[m, n].tick_params(axis="x", direction="in", width=.5, length=1, labelbottom=False)
         # grid[m, n].set_prop_cycle(color=colors_pop, linestyle=linestyle_str)
-        grid[m, n].text(0.98, 0.06, f"$\epsilon:{xGridVars[m]}$",
+        grid[m, n].text(0.98, 0.06, f"$\omega_c:{yGridVars[n]}\quad \epsilon:{xGridVars[m]}$",
                         transform=grid[m, n].transAxes, ha='right', fontsize=labelFontSize)
         # grid[m,n].grid(False)
         # grid[m,n].text(.1,.8, geom[m].upper()+str(phys_d[n]),
@@ -118,12 +118,12 @@ def pop_grid(inPlotVars=None, xGridVars=None, yLimit=(0, 1), direc='',
 geomList = ['ic', 'star']
 geomList = ['star']
 
-direc = './nlevels=20/output'
+direc = './thres1e-4_nlevels10/output'
 tempList = [90, 200, 300]
-energyList = np.arange(-2000, 8501, 500)
+energyList = np.arange(-4000, 8501, 500)
 # energyList = np.arange(2000, 5001, 500)
 gamList = np.arange(50, 1051, 200)
-aspectRatio = 1.5
+aspectRatio = 2
 coup = 120
 figName = f'c={coup}'
 # GR->LE 3169.121356999998, GR->CT 4661.842874499999, LE-CT 4946.1319074999965
@@ -137,5 +137,5 @@ pop_grid(inPlotVars=tempList,
          direc=direc,
          figName=f'sigma_z_{figName}',
          aspectRatio=aspectRatio,
-         figureWidth=3.75 * 2,
+         figureWidth=3.75*2*1.2,
          linewidth=0.5)
