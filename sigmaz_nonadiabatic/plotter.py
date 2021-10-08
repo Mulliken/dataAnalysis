@@ -118,13 +118,13 @@ def pop_grid(inPlotVars=None, xGridVars=None, yLimit=(0, 1), direc='',
 geomList = ['ic', 'star']
 geomList = ['star']
 
-direc = './output'
-tempList = [90, 200, 300, 400]
-energyList = np.arange(2000, 8501, 500)
-energyList = np.arange(2000, 5001, 500)
+direc = './nlevels=20/output'
+tempList = [90, 200, 300]
+energyList = np.arange(-2000, 8501, 500)
+# energyList = np.arange(2000, 5001, 500)
 gamList = np.arange(50, 1051, 200)
-aspectRatio = 1
-coup = 20
+aspectRatio = 1.5
+coup = 120
 figName = f'c={coup}'
 # GR->LE 3169.121356999998, GR->CT 4661.842874499999, LE-CT 4946.1319074999965
 

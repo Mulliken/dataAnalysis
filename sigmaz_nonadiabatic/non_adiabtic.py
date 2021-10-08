@@ -14,7 +14,7 @@ coupling = int(sys.argv[4])
 
 
 bath_length =int(200*5*1.5)
-phys_dim = 10
+phys_dim = 20
 bond_dim = 1000
 a = [np.ceil(phys_dim - N*(phys_dim -2)/ bath_length) for N in range(bath_length)]
 a = [int(x) for x in a]
@@ -32,7 +32,7 @@ etn.B[-1][0, 0, 0] = 1.
 
 
 # spectral density parameters
-g = 1000
+g = 2000
 eth.domain = [-g, g]
 j = lambda w: drude(w, lam=3952.11670, gam=gam)* temp_factor(temp,w)
 eth.sd = j
@@ -40,7 +40,7 @@ eth.sd = j
 eth.he_dy = np.diag([-1, 1])/2
 #eth.he_dy = np.diag([-.393073/2, .393073/2])
 #eth.h1e =  np.diag([0-2700,  3040.58271-2700*1.9321]) + 119.95105179*sigma_x #+ 0.03862659583*np.diag([2700,2700])
-eth.h1e =  np.diag([0,  ene]) + coupling*sigma_x
+eth.h1e =  np.diag([ene, 0]) + coupling*sigma_x
 #eth.h1e =  (9678.65315 - 3968.24779) * (sigma_z - sigma_1)/2 + 120.02659*sigma_x
 
 eth.build(g=1., ncap=50000)
@@ -48,7 +48,7 @@ eth.build(g=1., ncap=50000)
 print(eth.w_list)
 print(eth.k_list)
 
-# ~ 0.5 ps ~ 0.1T
+# 0.5 ps ~ 0.1T
 p = []
 
 
@@ -90,4 +90,4 @@ print(tt1-tt0)
 pop = [x.real for x in p]
 print("population", pop)
 pop = np.array(pop)
-pop.astype('float32').tofile(f'./output/pop_da1_{coupling}_{temp}_{ene}_{gam}.dat')
+pop.astype('float32').tofile(f'./output/pop_sigmaz_{coupling}_{temp}_{ene}_{gam}.dat')
